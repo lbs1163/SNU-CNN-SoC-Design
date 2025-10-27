@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="70" Path="C:/Users/beomsu/SNU-CNN-SoC-Design/4. riscv_memory/4. riscv_memory.xpr">
+<Project Product="Vivado" Version="7" Minor="70" Path="C:/Users/beomsu/SNU-CNN-SoC-Design/4. riscv_memory/riscv_memory.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="1effa9d98bc54e2289cda4d8ec912a95"/>
