@@ -67,9 +67,21 @@ reg  [4:0] rd_index_w;
 reg [31:0] rd_value_w;
 reg        rd_we_w;
 
+wire ex_stall_w;
+// Memory signals
+reg  [4:0] ex_rd_index_r;
+reg [31:0] ex_alu_res_r;
+reg [31:0] ex_mem_data_r;
+reg        ex_mem_rd_r;
+reg        ex_mem_wr_r;
+reg        ex_mem_signed_r;
+reg  [1:0] ex_mem_size_r;
+reg mem_stall_r;
+wire mem_stall_w;
+wire [31:0] mem_rdata_w;
 
 //--------------------------------------------------------------------
-// TODO: Instruction Fetch
+// Instruction Fetch
 //--------------------------------------------------------------------
 always @ (posedge clk_i or negedge reset_i) begin
 	if (~reset_i) begin
@@ -87,10 +99,10 @@ assign lock_o  = 1'b0;
 assign if_opcode_w = irdata_i;
 
 //--------------------------------------------------------------------
-// TODO: Branch, Jump and Link instructions
+// Branch, Jump and Link instructions
 //--------------------------------------------------------------------
 //{{{
-/* TODO: ALU */
+/* ALU */
 always@(*) begin
 	alu_op = `ALU_ADD;
 	alu_a = 32'h0;
@@ -103,7 +115,7 @@ always@(*) begin
 	alu_b  = (alu_imm_w || jal_w || load_w || store_w) ? id_imm_w : rb_value_r;
 	//}}
 end
-/* TODO: Branch, Jump and Link instructions */
+/* Branch, Jump and Link instructions */
 always @ (*) begin
 	branch_taken_w = 1'b0;
 	jump_addr_w = 32'h0;
@@ -114,18 +126,15 @@ always @ (*) begin
 		
 		end
 		`BR_NE: begin	
-		// Insert your code
-		//{{{
 			branch_taken_w = alu_p != 32'h0;
 			jump_addr_w = if_pc_d + id_imm_w;
-		//}}}
 		end
 		`BR_LT: begin		
 		// Insert your code
-		//{{{
+		//{{{		
 			branch_taken_w = alu_p[31];
 			jump_addr_w = if_pc_d + id_imm_w;
-		//}}}
+		//}}}		
 		end
 		`BR_GE: begin
 		
@@ -139,16 +148,83 @@ always @ (*) begin
 	endcase	
 end
 //}}}
+assign ex_stall_w = 1'b0;
+//--------------------------------------------------------------------
+// Execution
+//--------------------------------------------------------------------
+assign  ex_bubble_w = (~reset_i) || (ex_stall_w && !mem_stall_w);
+assign  ex_ready_w  = !mem_stall_w;
 
+always @(posedge clk_i or negedge reset_i) begin
+	if(~reset_i) begin
+		ex_rd_index_r 	<= 5'd2; // SP
+		ex_alu_res_r  	<= RESET_SP;
+		ex_mem_data_r   <= 32'h0;
+		ex_mem_rd_r     <= 1'b0;
+		ex_mem_wr_r     <= 1'b0;
+		ex_mem_signed_r <= 1'b0;
+		ex_mem_size_r   <= `SIZE_WORD;	
+	end
+	else begin 
+	  if (ex_bubble_w) begin
+		if (~reset_i) begin
+		  ex_rd_index_r <= 5'd2; // SP
+		  ex_alu_res_r  <= RESET_SP;
+		end 
+		else begin
+		  ex_rd_index_r <= 5'd0;
+		  ex_alu_res_r  <= 32'h0;
+		end
+		ex_mem_data_r   <= 32'h0;
+		ex_mem_rd_r     <= 1'b0;
+		ex_mem_wr_r     <= 1'b0;
+		ex_mem_signed_r <= 1'b0;
+		ex_mem_size_r   <= `SIZE_WORD;
+	  end 
+	  else if (ex_ready_w) begin
+		ex_rd_index_r   <= id_rd_index_w;
+		ex_alu_res_r    <= alu_p;
+		ex_mem_data_r   <= rb_value_r;
+		ex_mem_rd_r     <= load_w;
+		ex_mem_wr_r     <= store_w;
+		ex_mem_signed_r <= !lbu_w && !lhu_w;
+		ex_mem_size_r   <= id_mem_size_w;
+	  end
+  end
+end
 //--------------------------------------------------------------------
 // Write back
 //--------------------------------------------------------------------
-// Dummy data memory ports
-assign  daddr_o = 32'h0;
-assign  dwdata_o = 32'h0;
-assign  dsize_o = `SIZE_WORD;
-assign  drd_o = 1'b0;
-assign  dwr_o = 1'b0;
+// Insert your code
+//{{{
+// Dummy part
+//assign  daddr_o = 32'h0;
+//assign  dwdata_o = 32'h0;
+//assign  dsize_o = `SIZE_WORD;
+//assign  drd_o = 1'b0;
+//assign  dwr_o = 1'b0;
+
+// Your code
+assign daddr_o  = ra_value_r + id_imm_w;
+assign dwdata_o = rb_value_r;
+assign dsize_o  = id_mem_size_w;
+assign drd_o    = load_w && (mem_stall_r == 1'b0);
+assign dwr_o    = store_w && (mem_stall_r == 1'b0);
+//}}}
+
+assign mem_rdata_w =
+  (`SIZE_BYTE == ex_mem_size_r) ? { {24{ex_mem_signed_r & drdata_i[7]}}, drdata_i[7:0] } :
+  (`SIZE_HALF == ex_mem_size_r) ? { {16{ex_mem_signed_r & drdata_i[15]}}, drdata_i[15:0] } : drdata_i;
+  
+always @(posedge clk_i) begin
+  if (~reset_i)
+    mem_stall_r <= 1'b0;
+  else
+    mem_stall_r <= mem_stall_w;
+end
+
+assign mem_access_w = (ex_mem_rd_r || ex_mem_wr_r);
+assign mem_stall_w  = mem_stall_r ? 1'b0 : mem_access_w;
 
 // Dummy register file ports
 always@(*) begin
@@ -156,11 +232,12 @@ always@(*) begin
 	rd_value_w = 32'h0;
 	rd_we_w    = 1'b0;
 	// Insert your code
-	//{{{	
-	rd_index_w = id_rd_index_w;
-	rd_value_w = alu_p;
-	rd_we_w    = 1'b1;
-	//}}}	
+	//{{{
+	// Dummy parts
+	//rd_index_w = id_rd_index_w;
+	//rd_value_w = alu_p;
+	//rd_we_w    = 1'b1;		
+	//}}}		
 end
 //-----------------------------------------------------------------
 // Program Counter
