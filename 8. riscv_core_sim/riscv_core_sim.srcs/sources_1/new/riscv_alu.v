@@ -86,16 +86,16 @@ begin
                 shift_left_2_r = shift_left_1_r;
 
 			// Insert your code here
-			//{{{			
-            //if (alu_b_i[2] == 1'b1)										//*** shift left 4(x8) to 7(x128) 
-            //    shift_left_4_r = /*Insert your code */					//    :(alu_b_i[2:0]== 3'b100 to 3'b111)
-            //else
-            //    shift_left_4_r = /*Insert your code */
+			//{{{
+            if (alu_b_i[2] == 1'b1)										//*** shift left 4(x8) to 7(x128) 
+                shift_left_4_r = {shift_left_2_r[27:0],4'b00};			//    :(alu_b_i[2:0]== 3'b100 to 3'b111)
+            else
+                shift_left_4_r = shift_left_2_r;
 
-            //if (alu_b_i[3] == 1'b1)
-            //    shift_left_8_r = /*Insert your code */					//*** shift left 8 to 15
-            //else														//    :(alu_b_i[3:0]== 4'b1000 to 4'b1111 )
-            //    shift_left_8_r = /*Insert your code */
+            if (alu_b_i[3] == 1'b1)
+                shift_left_8_r = {shift_left_4_r[23:0],8'b00};			//*** shift left 8 to 15
+            else														//    :(alu_b_i[3:0]== 4'b1000 to 4'b1111 )
+                shift_left_8_r = shift_left_4_r;
 			//}}}
             if (alu_b_i[4] == 1'b1)
                 result_r = {shift_left_8_r[15:0],16'b0000000000000000}; //*** shift left 16 to 31
@@ -115,15 +115,15 @@ begin
 			
 			// Insert your code here
 			//{{{
-            //if (alu_b_i[0] == 1'b1)
-            //    shift_right_1_r = /*Insert your code */
-            //else
-            //    shift_right_1_r = /*Insert your code */
+            if (alu_b_i[0] == 1'b1)
+                shift_right_1_r = {shift_right_fill_r[31], alu_a_i[31:1]};
+            else
+                shift_right_1_r = alu_a_i;
 
-            //if (alu_b_i[1] == 1'b1)
-            //    shift_right_2_r = /*Insert your code */
-            //else
-            //    shift_right_2_r = /*Insert your code */
+            if (alu_b_i[1] == 1'b1)
+                shift_right_2_r = {shift_right_fill_r[31:30], alu_a_i[31:2]};
+            else
+                shift_right_2_r = shift_right_1_r;
 			//}}}
 			
             if (alu_b_i[2] == 1'b1)
@@ -161,11 +161,11 @@ begin
        end
        `ALU_OR  : 
        begin
-            //result_r      = /*Insert your code */
+            result_r      = (alu_a_i | alu_b_i);
        end
        `ALU_XOR : 
        begin
-            //result_r      = /*Insert your code */
+            result_r      = (alu_a_i ^ alu_b_i);
        end
        //----------------------------------------------
        // Comparision
@@ -178,10 +178,10 @@ begin
        begin
 			//Insert your code
 			//{{{
-            //if (alu_a_i[31] != alu_b_i[31])
-            //    result_r  = /*Insert your code */
-            //else
-            //    result_r  = sub_res_w[31] ? 32'h1 : 32'h0;            
+            if (alu_a_i[31] != alu_b_i[31])
+                result_r  = alu_b_i[31] ? 32'h1 : 32'h0; 
+            else
+                result_r  = sub_res_w[31] ? 32'h1 : 32'h0;            
 			//}}}
        end       
        default  : 

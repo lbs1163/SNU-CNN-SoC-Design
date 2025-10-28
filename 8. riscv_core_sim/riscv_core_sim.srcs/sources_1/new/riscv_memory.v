@@ -82,10 +82,10 @@ end
 // Instruction memory: READ ONLY
 //-----------------------------------------------------------------------------
 always @(posedge clk_i) begin
-	// Insert your code here
   if (~reset_i)
     irdata_r <= 32'h0;
   else if (ird_i)
+    // Insert your code here
     irdata_r <= mem_r[iaddr_i[DEPTH:2]];
 end
 
@@ -96,22 +96,23 @@ end
 //-----------------------------------------------------------------------------
 // Read operation
 always @(posedge clk_i) begin
-	// Insert your code here
   if (~reset_i)
     drdata_r <= 32'h0;
   else if (drd_i)
+    // Insert your code here
     drdata_r <= mem_r[daddr_i[DEPTH:2]];
 end
 
 // Write operation operation
 always @(posedge clk_i) begin
-	// Insert your code here
+	
   if (dbe_w[0] && dwr_i)
     mem_r[daddr_i[DEPTH:2]][7:0] <= dwdata_w[7:0];
 
   if (dbe_w[1] && dwr_i)
     mem_r[daddr_i[DEPTH:2]][15:8] <= dwdata_w[15:8];
-
+    
+  // Insert your code here
   if (dbe_w[2] && dwr_i)
     mem_r[daddr_i[DEPTH:2]][23:16] <= dwdata_w[23:16];
 
