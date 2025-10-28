@@ -98,9 +98,9 @@ always@(*) begin
 	
 	// Insert your code
 	//{{
-	//alu_op = id_alu_op_w;
-	//alu_a  = ra_value_r;
-	//alu_b  = (alu_imm_w || jal_w || load_w || store_w) ? id_imm_w : rb_value_r;
+	alu_op = id_alu_op_w;
+	alu_a  = ra_value_r;
+	alu_b  = (alu_imm_w || jal_w || load_w || store_w) ? id_imm_w : rb_value_r;
 	//}}
 end
 /* TODO: Branch, Jump and Link instructions */
@@ -120,10 +120,10 @@ always @ (*) begin
 		end
 		`BR_LT: begin		
 		// Insert your code
-		//{{{		
-			// Dummy Branch
-			branch_taken_w = 1'b1;		
-		//}}}		
+		//{{{
+			branch_taken_w = alu_p[31];
+			jump_addr_w = if_pc_d + id_imm_w;
+		//}}}
 		end
 		`BR_GE: begin
 		
@@ -155,9 +155,9 @@ always@(*) begin
 	rd_we_w    = 1'b0;
 	// Insert your code
 	//{{{	
-	//rd_index_w = id_rd_index_w;
-	//rd_value_w = alu_p;
-	//rd_we_w    = 1'b1;	
+	rd_index_w = id_rd_index_w;
+	rd_value_w = alu_p;
+	rd_we_w    = 1'b1;
 	//}}}	
 end
 //-----------------------------------------------------------------
