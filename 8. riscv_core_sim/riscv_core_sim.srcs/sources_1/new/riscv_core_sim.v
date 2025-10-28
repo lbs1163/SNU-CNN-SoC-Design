@@ -115,7 +115,9 @@ always @ (*) begin
 		end
 		`BR_NE: begin	
 		// Insert your code
-		//{{{		
+		//{{{
+			branch_taken_w = alu_p != 32'h0;
+			jump_addr_w = if_pc_d + id_imm_w;
 		//}}}
 		end
 		`BR_LT: begin		
