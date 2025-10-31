@@ -54,7 +54,7 @@ initial begin
 		sl_HSEL_multiplier = 1'b0;	
 	#(8*p) 
 	       alu_a_i = 32'h0;
-	       alu_b_i = 32'h0; 
+	       alu_b_i = 32'h2; 
 	       alu_op_i = `ALU_SLT;		
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`RISCV_REG_ALU_A_I, alu_a_i);	// Write the first operand
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`RISCV_REG_ALU_B_I, alu_b_i);    // Write the second operand
@@ -62,7 +62,7 @@ initial begin
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBread (`RISCV_REG_ALU_P_O, alu_p_o);     // Read the result
 	
 	#(8*p)
-	       alu_a_i = 32'h8;
+	       alu_a_i = 32'h7;
 	       alu_b_i = 32'h8; 
 	       alu_op_i = `ALU_ADD;		
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`RISCV_REG_ALU_A_I, alu_a_i);	// Write the first operand
@@ -75,8 +75,8 @@ initial begin
 		sl_HSEL_alu = 1'b0;
 		sl_HSEL_multiplier = 1'b1;	
 	#(8*p) 
-	       alu_a_i = 32'h7;
-	       alu_b_i = 32'h9; 
+	       alu_a_i = 32'h9;
+	       alu_b_i = 32'he; 
 	       alu_op_i = `ALU_MULL;		
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`RISCV_REG_MUL_A_I, alu_a_i     );	 // Write the first operand
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`RISCV_REG_MUL_B_I, alu_b_i     );    // Write the second operand
