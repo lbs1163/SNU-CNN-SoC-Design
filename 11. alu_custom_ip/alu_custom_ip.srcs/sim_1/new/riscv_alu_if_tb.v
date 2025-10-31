@@ -91,7 +91,7 @@ initial begin
 	
 	#(8*p)
 	       alu_a_i = 32'h0;
-	       alu_b_i = 32'h0; 
+	       alu_b_i = 32'h1; 
 	       alu_op_i = `ALU_SLT;		
 	#(4*p) u_riscv_dummy.task_AHBwrite(`RISCV_ALU_REG_ALU_A_I, alu_a_i);	// Write the first operand
 	#(4*p) u_riscv_dummy.task_AHBwrite(`RISCV_ALU_REG_ALU_B_I, alu_b_i);    // Write the second operand
@@ -100,7 +100,7 @@ initial begin
 	
 	#(8*p)
 	       alu_a_i = 32'h8;
-	       alu_b_i = 32'h8; 
+	       alu_b_i = 32'h6; 
 	       alu_op_i = `ALU_ADD;		
 	#(4*p) u_riscv_dummy.task_AHBwrite(`RISCV_ALU_REG_ALU_A_I, alu_a_i);	// Write the first operand
 	#(4*p) u_riscv_dummy.task_AHBwrite(`RISCV_ALU_REG_ALU_B_I, alu_b_i);	// Write the second operand
