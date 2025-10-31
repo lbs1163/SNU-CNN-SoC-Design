@@ -96,7 +96,10 @@ always@(*) begin
 	sl_HSEL_multiplier =1'b0;
 	//Insert your code
 	//{{{
-
+	if ((w_RISC2AHB_mst_HADDR & `RISCV_BASE_ADDRESS_MASK) == `RISCV_ALU_BASE_ADDR)
+		sl_HSEL_alu = 1'b1;
+	if ((w_RISC2AHB_mst_HADDR & `RISCV_BASE_ADDRESS_MASK) == `RISCV_MULTIPLIER_BASE_ADDR)
+		sl_HSEL_multiplier = 1'b1;
 	//}}}
 end
 
@@ -125,7 +128,7 @@ always@(*) begin
 	end
 	// Master accesses Multiplier 
 	else begin
-		//w_RISC2AHB_mst_HRDATA   = /*Insert your code*/  ;
+		w_RISC2AHB_mst_HRDATA   = w_RISC2AHB_mul_HRDATA  ;
 		w_RISC2AHB_mst_HRESP    = w_RISC2AHB_mul_HRESP       ;
 		w_RISC2AHB_mst_HREADY   = w_RISC2AHB_mul_HREADY      ;		
 	end
