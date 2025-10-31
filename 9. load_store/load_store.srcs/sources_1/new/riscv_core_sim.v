@@ -228,15 +228,15 @@ assign mem_stall_w  = mem_stall_r ? 1'b0 : mem_access_w;
 
 // Dummy register file ports
 always@(*) begin
-	rd_index_w = 5'h0;
-	rd_value_w = 32'h0;
-	rd_we_w    = 1'b0;
+	// rd_index_w = 5'h0;
+	// rd_value_w = 32'h0;
+	// rd_we_w    = 1'b0;
 	// Insert your code
 	//{{{
 	// Dummy parts
-	//rd_index_w = id_rd_index_w;
-	//rd_value_w = alu_p;
-	//rd_we_w    = 1'b1;		
+	rd_index_w = id_rd_index_w;
+	rd_value_w = alu_p;
+	rd_we_w    = 1'b1;
 	//}}}		
 end
 //-----------------------------------------------------------------
