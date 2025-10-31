@@ -320,12 +320,14 @@ always @ (*) begin
 		end
 		`BR_NE: begin	
 			/*Insert your code*/
+			branch_taken_w = !adder_z_w;
 		end
 		`BR_LT: begin		
 			branch_taken_w = (adder_n_w != adder_v_w);
 		end
 		`BR_GE: begin
 			/*Insert your code*/
+			branch_taken_w = (adder_n_w == adder_v_w);
 		end
 		`BR_LTU: begin
 			branch_taken_w = !adder_c_w;

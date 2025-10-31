@@ -227,20 +227,20 @@ assign id_rb_index_w = (load_w || jump_w || alu_imm_w) ? 5'd0 : rb_w;
 // Operands ALU
 assign id_alu_op_w =
     (add_w || addi_w || lui_w || load_w || store_w) ? `ALU_ADD :
-    (andi_w || and_w)                    ? `ALU_AND :
-    (ori_w || or_w)                      ? `ALU_OR  :
-    (xori_w || xor_w)                    ? `ALU_XOR :
-    (slti_w || slt_w)                    ? `ALU_SLT :
-    (sltiu_w || sltu_w)                  ? `ALU_SLTU:
-    (sll_w || slli_w)   				 ? `ALU_SLL :
-    (srl_w || srli_w) 					 ? `ALU_SRL :
-	(sra_w || srai_w) 					 ? `ALU_SRA :
-    (mulh_w || mulhsu_w || mulhu_w)      ? `ALU_MULH:
-    (mul_w)                              ? `ALU_MULL:
-    (div_w || divu_w)                    ? `ALU_DIV :
-    (rem_w || remu_w)                    ? `ALU_REM :
-    (jal_w || jalr_w)                    ? `ALU_NPC :
-    (auipc_w)                            ? `ALU_AUIPC : `ALU_SUB;
+    (andi_w || and_w)   			? `ALU_AND :
+    (ori_w || or_w)     			? `ALU_OR :
+    (xori_w || xor_w)   			? `ALU_XOR :
+    (slti_w || slt_w)   			? `ALU_SLT :
+    (sltiu_w || sltu_w) 			? `ALU_SLTU :
+    (sll_w || slli_w)   			? `ALU_SLL :
+    (srl_w || srli_w) 				? `ALU_SRL :
+	(sra_w || srai_w) 				? `ALU_SRA :
+    (mulh_w || mulhsu_w || mulhu_w) ? `ALU_MULH :
+    (mul_w)                         ? `ALU_MULL :
+    (div_w || divu_w)               ? `ALU_DIV :
+    (rem_w || remu_w)               ? `ALU_REM :
+    (jal_w || jalr_w)               ? `ALU_NPC :
+    (auipc_w)                       ? `ALU_AUIPC : `ALU_SUB;
 
 assign id_branch_w =
     beq_w  ? `BR_EQ :

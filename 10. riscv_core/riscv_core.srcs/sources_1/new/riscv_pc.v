@@ -2,9 +2,7 @@
 //--------------------------------------------------------------------
 // Program Counter
 //--------------------------------------------------------------------
-module riscv_pc #(
-parameter 	RESET_SP = 32'h0000,
-parameter   PC_SIZE  = 32)
+module riscv_pc #(parameter     PC_SIZE  = 32)
 (
 	input clk_i,						// Clock
 	input reset_i,						// Reset
@@ -17,24 +15,17 @@ parameter   PC_SIZE  = 32)
 reg [PC_SIZE-1:0] if_addr_r;
 always @(posedge clk_i or negedge reset_i) begin
   if (~reset_i) begin
-	//Your code
-    if_addr_r <= RESET_SP;
+    if_addr_r <= 'h0;
   end
   else begin 
-	if (ird) begin
-		// Your code
-		//{{{
-		if(branch_taken_w) begin
-			if_addr_r <= jump_addr_w;
-		end
-		else begin
-			if_addr_r <= if_addr_r + {{PC_SIZE-3{1'b0}}, 3'b100};
-		end
-		//}}}
-	end
+	  if (ird)
+		if_addr_r <= if_next_addr_w + 'd4;
+	  else if (branch_taken_w)
+		if_addr_r <= jump_addr_w;
   end
 end
 
 assign if_next_addr_w = branch_taken_w ? jump_addr_w: if_addr_r;
 
 endmodule
+
