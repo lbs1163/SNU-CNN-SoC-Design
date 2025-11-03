@@ -157,7 +157,7 @@ initial begin
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`LCD_DRIVE_START_UP_DELAY	, q_start_up_delay 	);
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`LCD_DRIVE_VSYNC_CYCLE		, q_vsync_cycle 	);
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`LCD_DRIVE_VSYNC_DELAY		, q_vsync_delay 	);
-	#(4*p) u_top_system.u_riscv_dummy.task_AHBread( `LCD_DRIVE_HSYNC_DELAY		, q_hsync_delay 	);
+	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`LCD_DRIVE_HSYNC_DELAY		, q_hsync_delay 	);
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`LCD_DRIVE_FRAME_TRANS_DELAY, q_frame_trans_delay);
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`LCD_DRIVE_DATA_COUNT		, q_data_count 		);
 	#(4*p) u_top_system.u_riscv_dummy.task_AHBwrite(`LCD_DRIVE_BR_MODE			, q_br_mode);
