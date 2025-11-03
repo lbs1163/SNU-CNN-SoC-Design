@@ -77,11 +77,11 @@ sensor_model
 
 /* Insert your code here */
 // Dummy 
-assign br_mode = 1'b1;
-assign br_value = 8'd0;
+// assign br_mode = 1'b1;
+// assign br_value = 8'd0;
 //{{{
-//assign br_mode = ;	//1: brighter, 0: darker
-//assign br_value = ;	//amount of adjustment
+assign br_mode = 1'b0;	//1: brighter, 0: darker
+assign br_value = 8'd100;	//amount of adjustment
 //}}}
 brightness_adjustment 
 #(.IMG_PIX_W(IMG_PIX_W),
