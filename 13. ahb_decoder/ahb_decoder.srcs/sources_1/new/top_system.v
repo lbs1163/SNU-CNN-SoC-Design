@@ -93,7 +93,7 @@ riscv_multiplier_if u_riscv_multiplier_if (
 //---------------------------------------------------------------
 always@(*) begin
 	sl_HSEL_alu = 1'b0;
-	sl_HSEL_multiplier =1'b0;
+	sl_HSEL_multiplier = 1'b0;
 	//Insert your code
 	//{{{
 	if ((w_RISC2AHB_mst_HADDR & `RISCV_BASE_ADDRESS_MASK) == `RISCV_ALU_BASE_ADDR)
@@ -101,6 +101,7 @@ always@(*) begin
 	if ((w_RISC2AHB_mst_HADDR & `RISCV_BASE_ADDRESS_MASK) == `RISCV_MULTIPLIER_BASE_ADDR)
 		sl_HSEL_multiplier = 1'b1;
 	//}}}
+	// $display("top", w_RISC2AHB_mst_HADDR, sl_HSEL_alu, sl_HSEL_multiplier);
 end
 
 // Assume a readout data is available after one cycle

@@ -76,6 +76,7 @@ reg a_signed, b_signed;
 //----------------------------------------------------------
 always @(posedge HCLK or negedge HRESETn)
 begin
+	// $display("multiplier", sl_HSEL, sl_HREADY, sl_HTRANS);
 	if(~HRESETn)
 	begin
 		//control
