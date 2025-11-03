@@ -93,6 +93,7 @@ task task_AHBwrite;
 		o_HBURST	= BUR_SINGLE;
 		o_HWRITE	= 1'b1;
 
+		@(posedge HCLK);	//#p;
 		// Data phase
 		while(!w_HREADY)	@(posedge HCLK);
 		@(posedge HCLK);	//#p;
@@ -129,7 +130,8 @@ task task_AHBread;
 		o_HSIZE		=	SZ_WORD;
 		o_HBURST	=	BUR_SINGLE;
 		o_HWRITE	=	1'b0;
-											  
+
+		@(posedge HCLK);	//#p;
 		while(!w_HREADY)	@(posedge HCLK);
 		@(posedge HCLK);	//#p;
 											  
