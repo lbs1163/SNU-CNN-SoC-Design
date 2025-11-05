@@ -8,7 +8,6 @@ wire[15:0] y;
 // DUT: multiplier
 //-------------------------------------------
 mul u_mul(
-./*input 	    */clk(clk), 
 ./*input [ 7:0] */w(w), 
 ./*input [ 7:0] */x(x), 
 ./*output[15:0] */y(y)
