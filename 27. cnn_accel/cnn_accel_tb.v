@@ -6,10 +6,10 @@ module cnn_accel_tb;
 parameter W_ADDR=32;
 parameter W_DATA=32;
 parameter IMG_PIX_W = 8;
-parameter OUTFILE00   = "./out/convout_layer01_ch01.bmp";
-parameter OUTFILE01   = "./out/convout_layer01_ch02.bmp";
-parameter OUTFILE02   = "./out/convout_layer01_ch03.bmp";
-parameter OUTFILE03   = "./out/convout_layer01_ch04.bmp";
+parameter OUTFILE00   = "./convout_layer01_ch01.bmp";
+parameter OUTFILE01   = "./convout_layer01_ch02.bmp";
+parameter OUTFILE02   = "./convout_layer01_ch03.bmp";
+parameter OUTFILE03   = "./convout_layer01_ch04.bmp";
 //parameter WIDTH 	= 768,
 //		HEIGHT 	= 512,
 parameter   WIDTH 	= 128,

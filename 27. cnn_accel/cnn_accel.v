@@ -10,11 +10,11 @@ module cnn_accel #(
 	parameter HEIGHT 	= 128,
 	parameter START_UP_DELAY = 200,
 	parameter HSYNC_DELAY = 160,
-	parameter INFILE    = "./img/butterfly_08bit.hex",
-	parameter OUTFILE00   = "./out/convout_ch01.bmp",
-	parameter OUTFILE01   = "./out/convout_ch02.bmp",
-	parameter OUTFILE02   = "./out/convout_ch03.bmp",
-	parameter OUTFILE03   = "./out/convout_ch04.bmp")
+	parameter INFILE    = "./butterfly_08bit.hex",
+	parameter OUTFILE00   = "./convout_ch01.bmp",
+	parameter OUTFILE01   = "./convout_ch02.bmp",
+	parameter OUTFILE02   = "./convout_ch03.bmp",
+	parameter OUTFILE03   = "./convout_ch04.bmp")
 (
 	//CLOCK
 	HCLK,
@@ -205,7 +205,7 @@ begin
 		q_is_first_layer		<= 1'b0;
 		q_is_last_layer			<= 1'b0;
 		q_bias_shift 			<= 9;
-		q_act_shift 			<= 7;		
+		q_act_shift 			<= 7;	
 		q_base_addr_weight  	<= 0;
 		q_base_addr_param    	<= 0;		
 		q_layer_done			<= 1'b0;
@@ -232,13 +232,13 @@ begin
 					q_base_addr_param	<= sl_HWDATA[31:20];
 				end
 				CNN_ACCEL_LAYER_CONFIG: begin
-					//q_is_first_layer 	<= /*Insert your code*/;
-					//q_is_last_layer	<= /*Insert your code*/;
-					//q_is_conv3x3		<= /*Insert your code*/;
-					//q_act_type		<= /*Insert your code*/;
-					//q_layer_index		<= /*Insert your code*/;
-					//q_bias_shift		<= /*Insert your code*/;
-					//q_act_shift		<= /*Insert your code*/;
+					q_is_first_layer 	<= sl_HWDATA[0];
+					q_is_last_layer		<= sl_HWDATA[1];
+					q_is_conv3x3		<= sl_HWDATA[2];
+					q_act_type			<= sl_HWDATA[3];
+					q_layer_index		<= sl_HWDATA[7:4];
+					q_bias_shift		<= sl_HWDATA[12:8];
+					q_act_shift			<= sl_HWDATA[15:13];
 				end
 				CNN_ACCEL_INPUT_IMAGE: 		q_input_pixel_data <= sl_HWDATA;				
 				CNN_ACCEL_INPUT_IMAGE_BASE: q_input_image_base_addr <= sl_HWDATA;
