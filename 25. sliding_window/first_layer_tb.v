@@ -6,11 +6,11 @@ module first_layer_tb;
 parameter BMP_HEADER_NUM = 54;
 parameter WIDTH 	= 128;
 parameter HEIGHT 	= 128;
-parameter INFILE    = "./img/butterfly_08bit.hex";
-parameter OUTFILE00   = "./out/convout_layer01_ch01.bmp";
-parameter OUTFILE01   = "./out/convout_layer01_ch02.bmp";
-parameter OUTFILE02   = "./out/convout_layer01_ch03.bmp";
-parameter OUTFILE03   = "./out/convout_layer01_ch04.bmp";
+parameter INFILE    = "./butterfly_08bit.hex";
+parameter OUTFILE00   = "./convout_layer01_ch01.bmp";
+parameter OUTFILE01   = "./convout_layer01_ch02.bmp";
+parameter OUTFILE02   = "./convout_layer01_ch03.bmp";
+parameter OUTFILE03   = "./convout_layer01_ch04.bmp";
 
 parameter START_UP_DELAY = 100;
 parameter HSYNC_DELAY = 160;
@@ -247,10 +247,28 @@ initial begin
 					if(col == 0) begin
 						@(posedge clk) 		vld_i = 1'b1;
 						/* Insert your code*/
+						din[0*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col-1]*/;
+						din[1*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col  ]*/;
+						din[2*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col+1]*/;
+						din[3*WI+:WI] = 8'd0/*in_img[(row  ) * WIDTH + col-1]*/;
+						din[4*WI+:WI] = in_img[(row  ) * WIDTH + col  ]		   ;
+						din[5*WI+:WI] = in_img[(row  ) * WIDTH + col+1]		   ;
+						din[6*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col-1]*/;
+						din[7*WI+:WI] = in_img[(row+1) * WIDTH + col  ]		   ;
+						din[8*WI+:WI] = in_img[(row+1) * WIDTH + col+1]		   ;
 					end
 					else if (col == WIDTH-1) begin
 						@(posedge clk) 		vld_i = 1'b1;
 						/* Insert your code*/
+						din[0*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col-1]*/;
+						din[1*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col  ]*/;
+						din[2*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col+1]*/;
+						din[3*WI+:WI] = in_img[(row  ) * WIDTH + col-1]		   ;
+						din[4*WI+:WI] = in_img[(row  ) * WIDTH + col  ]		   ;
+						din[5*WI+:WI] = 8'd0/*in_img[(row  ) * WIDTH + col+1]*/;
+						din[6*WI+:WI] = in_img[(row+1) * WIDTH + col-1]		   ;
+						din[7*WI+:WI] = in_img[(row+1) * WIDTH + col  ]		   ;
+						din[8*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col+1]*/;
 					end
 					else begin
 						@(posedge clk) 		vld_i = 1'b1;
@@ -269,10 +287,28 @@ initial begin
 					if(col == 0) begin
 						@(posedge clk) 		vld_i = 1'b1;
 						/* Insert your code*/
+						din[0*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col-1]*/;
+						din[1*WI+:WI] = in_img[(row-1) * WIDTH + col  ]        ;
+						din[2*WI+:WI] = in_img[(row-1) * WIDTH + col+1]        ;
+						din[3*WI+:WI] = 8'd0/*in_img[(row  ) * WIDTH + col-1]*/;
+						din[4*WI+:WI] = in_img[(row  ) * WIDTH + col  ]        ;
+						din[5*WI+:WI] = in_img[(row  ) * WIDTH + col+1]        ;
+						din[6*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col-1]*/;
+						din[7*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col  ]*/;
+						din[8*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col+1]*/;
 					end
 					else if (col == WIDTH-1) begin
 						@(posedge clk) 		vld_i = 1'b1;
 						/* Insert your code*/
+						din[0*WI+:WI] = in_img[(row-1) * WIDTH + col-1]        ;
+						din[1*WI+:WI] = in_img[(row-1) * WIDTH + col  ]        ;
+						din[2*WI+:WI] = 8'd0/*in_img[(row-1) * WIDTH + col+1]*/;
+						din[3*WI+:WI] = in_img[(row  ) * WIDTH + col-1]        ;
+						din[4*WI+:WI] = in_img[(row  ) * WIDTH + col  ]        ;
+						din[5*WI+:WI] = 8'd0/*in_img[(row  ) * WIDTH + col+1]*/;
+						din[6*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col-1]*/;
+						din[7*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col  ]*/;
+						din[8*WI+:WI] = 8'd0/*in_img[(row+1) * WIDTH + col+1]*/;
 					end
 					else begin
 						@(posedge clk) 		vld_i = 1'b1;
@@ -315,6 +351,15 @@ initial begin
 					else begin
 						@(posedge clk) 		vld_i = 1'b1;
 						/* Insert your code*/
+						din[0*WI+:WI] = in_img[(row-1) * WIDTH + col-1]        ;
+						din[1*WI+:WI] = in_img[(row-1) * WIDTH + col  ]        ;
+						din[2*WI+:WI] = in_img[(row-1) * WIDTH + col+1]        ;
+						din[3*WI+:WI] = in_img[(row  ) * WIDTH + col-1]        ;
+						din[4*WI+:WI] = in_img[(row  ) * WIDTH + col  ]        ;
+						din[5*WI+:WI] = in_img[(row  ) * WIDTH + col+1]        ;
+						din[6*WI+:WI] = in_img[(row+1) * WIDTH + col-1]        ;
+						din[7*WI+:WI] = in_img[(row+1) * WIDTH + col  ]        ;
+						din[8*WI+:WI] = in_img[(row+1) * WIDTH + col+1]        ;
 					end
 				end
 			end
