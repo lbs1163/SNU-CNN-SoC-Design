@@ -32,7 +32,18 @@ for k = 1:c_out				% Number of output channels
     for i = 1:h_out			% Row
         for j = 1:w_out		% Column
 			% Insert your code
-			
+            for l = 1:f                             % Kernel height
+                for m = 1:f                         % Kernel width
+                    for c_in = 1:c                  % Number of input channels
+                        h_in = (i - 1) * s + l;
+                        w_in = (j - 1) * s + m;
+
+                        % fprintf("(i,j,k)=(%d,%d,%d), (l,m,c_in,k)=(%d,%d,%d,%d), (h_in,w_in,c_in)=(%d,%d,%d)\n", i,j,k, l,m,c_in,k, h_in,w_in,c_in);
+                        
+		                out(i,j,k) = out(i,j,k) + kernel(l, m, c_in, k) * pad_img(h_in, w_in, c_in);
+                    end
+                end
+            end
         end
     end
 end
