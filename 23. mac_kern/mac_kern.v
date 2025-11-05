@@ -57,8 +57,12 @@ always@(posedge clk, negedge rstn) begin
 	else begin
 		if(sub_vld_o) begin
 			/* insert your code */
-			
-			
+			if(pix_idx != 0) begin
+				psum <= psum + $signed(sub_acc_o);
+			end
+			else begin
+				psum <= $signed(sub_acc_o);
+			end
 		end
 	end
 end
@@ -90,7 +94,7 @@ always@(posedge clk, negedge rstn) begin
 			vld_o <= sub_vld_o;
 		else begin				// conv3x3
 			/* insert your code */
-			
+			vld_o <= pix_idx == 4'd8;
 		end			
 	end
 end
@@ -103,7 +107,7 @@ always@(posedge clk, negedge rstn) begin
     end
 	else begin
 		if(is_conv3x3_d[WN] && sub_vld_o) begin
-			if(pix_idx == 8)
+			if(pix_idx == 4'd8)
 				pix_idx <= 0;
 			else
 				pix_idx <= pix_idx + 1;			
