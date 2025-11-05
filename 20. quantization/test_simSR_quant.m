@@ -13,6 +13,19 @@ w2 = permute(reshape(w2, 3, 3, 16, 16), [2, 1, 3, 4]);
 [w3,b3,~,~,~] = read_conv_param_module('bin/sim_espcn_3x3.weights_layer_2',3, 16,4,0);
 w3 = permute(reshape(w3, 3, 3, 16,4), [2, 1, 3, 4]);
 
+%% Demo sim-SR
+nbits = 8;
+fbits = 8;
+step = 2^-fbits;
+biases_shift = 8;
+
+[wq1,~] = uniform_quantize(w1, step, nbits);
+[bq1,~] = uniform_quantize(b1, step, nbits+8);
+[wq2,~] = uniform_quantize(w2, step, nbits);
+[bq2,~] = uniform_quantize(b2, step, nbits+8);
+[wq3,~] = uniform_quantize(w3, step, nbits);
+[bq3,~] = uniform_quantize(b3, step, nbits+8);
+
 %% Load an image
 SF = 2;     % Up scaling 2x
 imGT = imread('img/butterfly_GT.bmp');
@@ -39,18 +52,16 @@ imshow(input);
 % Now, we convert an image input to a 8-bit format
 input = double(floor(imlowy * 255));
 
-%% Demo sim-SR
 
 % First Layer
-conv_out = convol2(input, w1, 1, 2);
+conv_out = convol2(input, wq1, 1, 2);
 for j = 1:size(conv_out, 3)
     % Add bias
-    conv_out(:,:,j) = conv_out(:,:,j) + b1(j);
+    conv_out(:,:,j) = conv_out(:,:,j) + bq1(j);
 end
 
 % Activation
-conv_out_relu = conv_out;
-conv_out_relu(conv_out_relu < 0) = 0;
+conv_out_relu = hwu_relu_quantize(conv_out, step, nbits, biases_shift);
 
 for i = 1:size(conv_out, 3)
    figure(1)
@@ -62,19 +73,17 @@ for i = 1:size(conv_out, 3)
    pause(1)
 end
 
-
 % Insert your code for other layers
 
 % Second Layer
-conv_out2 = convol2(conv_out_relu, w2, 1, 2);
+conv_out2 = convol2(conv_out_relu, wq2, 1, 2);
 for j = 1:size(conv_out2, 3)
     % Add bias
-    conv_out2(:,:,j) = conv_out2(:,:,j) + b2(j);
+    conv_out2(:,:,j) = conv_out2(:,:,j) + bq2(j);
 end
 
 % Activation
-conv_out_relu2 = conv_out2;
-conv_out_relu2(conv_out_relu2 < 0) = 0;
+conv_out_relu2 = hwu_relu_quantize(conv_out2, step, nbits, biases_shift);
 
 for i = 1:size(conv_out2, 3)
    figure(1)
@@ -87,16 +96,21 @@ for i = 1:size(conv_out2, 3)
 end
 
 % Third Layer
-conv_out3 = convol2(conv_out_relu2, w3, 1, 2);
+conv_out3 = convol2(conv_out_relu2, wq3, 1, 2);
 for j = 1:size(conv_out3, 3)
     % Add bias
-    conv_out3(:,:,j) = conv_out3(:,:,j) + b3(j);
+    conv_out3(:,:,j) = conv_out3(:,:,j) + bq3(j);
 end
+
+% Activation
+conv_out_linear = hwu_linear_quantize(conv_out3, step, nbits, biases_shift);
 
 for i = 1:size(conv_out, 3)
    figure(1)
-   subplot(1,1,1)
-   imshow(conv_out(:,:,i));title(['ch = ',num2str(i)]);
+   subplot(1,2,1)
+   imshow(conv_out3(:,:,i));title(['ch = ',num2str(i)]);
+   subplot(1,2,2)
+   imshow(conv_out_linear(:,:,i));title('After ReLU');
    saveas(gcf,['output/3_',num2str(i),'.bmp']);
    pause(1)
 end
