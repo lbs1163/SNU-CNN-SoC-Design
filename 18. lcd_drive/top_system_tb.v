@@ -104,7 +104,7 @@ initial begin
 	q_data_count 		= DATA_COUNT;
 	q_start 			= 1'b1;
 	q_br_mode			<= 1'b1;
-	q_br_value			<= 8'h50;		
+	q_br_value			<= 8'd100;		
 	u_top_system.u_riscv_dummy.task_AHBinit();
 	
 	#(p/2) HRESETn = 1;

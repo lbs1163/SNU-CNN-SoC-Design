@@ -1,7 +1,7 @@
 `include "amba_ahb_h.v"
 
 module lcd_drive_if #(
-	parameter INFILE  = "./img/kodim03.hex",
+	parameter INFILE  = "./kodim03.hex",
 	parameter W_ADDR = 32,
 	parameter W_DATA = 32,
 	parameter WB_DATA = 4,
@@ -196,10 +196,10 @@ begin
 					q_start <= sl_HWDATA[0];	
 				end
 				LCD_DRIVE_BR_MODE: begin 
-					q_br_mode <= sl_HWDATA[IMG_PIX_W-1 :0];	
+					q_br_mode <= sl_HWDATA[0];	
 				end
 				LCD_DRIVE_BR_VALUE: begin 
-					q_br_value <= sl_HWDATA[0];	
+					q_br_value <= sl_HWDATA[IMG_PIX_W-1 :0];	
 				end
 			endcase
 		end
