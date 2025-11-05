@@ -351,15 +351,15 @@ always @(posedge clk or negedge rstn)begin
 		win[1][15*WI+:WI] <= 8'd0;
 		
 		// First layer, channel 02:
-		win[2][0*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][1*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][2*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][3*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][4*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][5*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][6*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][7*WI+:WI] <= 8'd0;/*Insert your code*/
-		win[2][8*WI+:WI] <= 8'd0;/*Insert your code*/
+		win[2][0*WI+:WI] <= 8'd13;/*Insert your code*/
+		win[2][1*WI+:WI] <= 8'd244;/*Insert your code*/
+		win[2][2*WI+:WI] <= 8'd255;/*Insert your code*/
+		win[2][3*WI+:WI] <= 8'd241;/*Insert your code*/
+		win[2][4*WI+:WI] <= 8'd127;/*Insert your code*/
+		win[2][5*WI+:WI] <= 8'd240;/*Insert your code*/
+		win[2][6*WI+:WI] <= 8'd252;/*Insert your code*/
+		win[2][7*WI+:WI] <= 8'd237;/*Insert your code*/
+		win[2][8*WI+:WI] <= 8'd1;/*Insert your code*/
 		win[2][9*WI+:WI] <= 8'd0;/*Insert your code*/
 		win[2][10*WI+:WI] <= 8'd0;
 		win[2][11*WI+:WI] <= 8'd0;
@@ -399,16 +399,16 @@ always@(*) begin
 	din    = 0;
 	// First layer
 	if(q_is_first_layer) begin
-		//vld_i = /*insert your code*/;
-		//din[0*WI+:WI] = /*Insert your code*/;
-		//din[1*WI+:WI] = /*Insert your code*/;
-		//din[2*WI+:WI] = /*Insert your code*/;
-		//din[3*WI+:WI] = /*Insert your code*/;
-		//din[4*WI+:WI] = /*Insert your code*/;
-		//din[5*WI+:WI] = /*Insert your code*/;
-		//din[6*WI+:WI] = /*Insert your code*/;
-		//din[7*WI+:WI] = /*Insert your code*/;
-		//din[8*WI+:WI] = /*Insert your code*/;		
+		vld_i = ctrl_data_run;
+		din[0*WI+:WI] = (is_first_row | is_first_col) ? 8'd0 : in_img[(row-1) * q_width + (col-1)];
+		din[1*WI+:WI] = (is_first_row               ) ? 8'd0 : in_img[(row-1) * q_width + (col  )];
+		din[2*WI+:WI] = (is_first_row | is_last_col ) ? 8'd0 : in_img[(row-1) * q_width + (col+1)];
+		din[3*WI+:WI] = (               is_first_col) ? 8'd0 : in_img[(row  ) * q_width + (col-1)];
+		din[4*WI+:WI] =                                        in_img[(row  ) * q_width + (col  )];
+		din[5*WI+:WI] = (               is_last_col ) ? 8'd0 : in_img[(row  ) * q_width + (col+1)];
+		din[6*WI+:WI] = (is_last_row  | is_first_col) ? 8'd0 : in_img[(row+1) * q_width + (col-1)];
+		din[7*WI+:WI] = (is_last_row                ) ? 8'd0 : in_img[(row+1) * q_width + (col  )];
+		din[8*WI+:WI] = (is_last_row  | is_last_col ) ? 8'd0 : in_img[(row+1) * q_width + (col+1)];
 	end
 end
 //-------------------------------------------------------------------------------
