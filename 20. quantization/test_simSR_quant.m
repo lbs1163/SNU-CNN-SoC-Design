@@ -110,7 +110,7 @@ for i = 1:size(conv_out, 3)
    subplot(1,2,1)
    imshow(conv_out3(:,:,i));title(['ch = ',num2str(i)]);
    subplot(1,2,2)
-   imshow(conv_out_linear(:,:,i));title('After ReLU');
+   imshow(conv_out_linear(:,:,i));title('After Linear');
    saveas(gcf,['output/3_',num2str(i),'.bmp']);
    pause(1)
 end
