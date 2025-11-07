@@ -411,6 +411,12 @@ always@(*) begin
 		din[8*WI+:WI] = (is_last_row  | is_last_col ) ? 8'd0 : in_img[(row+1) * q_width + (col+1)];
 	end
 end
+
+always@(row, col) begin
+	// $strobe("%d, %d", row, col);
+	// $strobe("%d, %d, %d", (row  ) * q_width + (col-1), {7'b0, row} * {7'b0, q_width} + {7'b0, col}, (row  ) * q_width + (col+1));
+	// $strobe("%d, %d, %d, %d, %d, %d, %d, %d, %d", din[0*WI+:WI], din[1*WI+:WI], din[2*WI+:WI], din[3*WI+:WI], din[4*WI+:WI], din[5*WI+:WI], din[6*WI+:WI], din[7*WI+:WI], din[8*WI+:WI]);
+end
 //-------------------------------------------------------------------------------
 // Computing units
 //-------------------------------------------------------------------------------

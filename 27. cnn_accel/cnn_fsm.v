@@ -143,7 +143,7 @@ begin
 		if(ctrl_data_run) begin
 			if(col == q_width - 1) begin
 				if(end_frame)
-					row <= 0;			
+					row <= 0;
 				else 
 					row <= row + 1;
 			end
