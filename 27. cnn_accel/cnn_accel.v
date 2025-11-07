@@ -404,7 +404,7 @@ always@(*) begin
 		din[1*WI+:WI] = (is_first_row               ) ? 8'd0 : in_img[(row-1) * q_width + (col  )];
 		din[2*WI+:WI] = (is_first_row | is_last_col ) ? 8'd0 : in_img[(row-1) * q_width + (col+1)];
 		din[3*WI+:WI] = (               is_first_col) ? 8'd0 : in_img[(row  ) * q_width + (col-1)];
-		din[4*WI+:WI] =                                        in_img[(row  ) * q_width + (col  )];
+		din[4*WI+:WI] =                                        in_img[{7'b0, row} * {7'b0, q_width} + {7'b0, col}];
 		din[5*WI+:WI] = (               is_last_col ) ? 8'd0 : in_img[(row  ) * q_width + (col+1)];
 		din[6*WI+:WI] = (is_last_row  | is_first_col) ? 8'd0 : in_img[(row+1) * q_width + (col-1)];
 		din[7*WI+:WI] = (is_last_row                ) ? 8'd0 : in_img[(row+1) * q_width + (col  )];
